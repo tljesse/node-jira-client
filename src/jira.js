@@ -7,7 +7,7 @@ import url from 'url';
  * Wrapper for the JIRA Rest Api
  * https://docs.atlassian.com/jira/REST/6.4.8/
  */
-export default class JiraApi {
+export default class JiraServiceDeskApi {
   /**
    * @constructor
    * @function
@@ -147,7 +147,7 @@ export default class JiraApi {
     pathname, query, intermediatePath, encode = false,
   }) {
     const intermediateToUse = this.intermediatePath || intermediatePath;
-    const tempPath = intermediateToUse || `/rest/api/${this.apiVersion}`;
+    const tempPath = intermediateToUse || `/rest/servicedeskapi/${this.apiVersion}`;
     const uri = url.format({
       protocol: this.protocol,
       hostname: this.host,
@@ -282,6 +282,18 @@ export default class JiraApi {
     }
 
     return response;
+  }
+
+  /**
+   * @name getInfo
+   * @function
+   * Return runtime info about Jira Service Desk
+   * [Jira Doc](https://docs.atlassian.com/jira-servicedesk/REST/3.6.2/#servicedeskapi/info-getInfo)
+   */
+  getInfo() {
+    return this.doRequest(this.makeRequestHeader(this.makeUri({
+      pathname: `/info`
+    })));
   }
 
   /**
